@@ -1,4 +1,4 @@
-module github.com/Kaamkiya/mango
+module github.com/Kaamkiya/mangoes
 
 go 1.25.4
 
