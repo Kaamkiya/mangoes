@@ -175,5 +175,5 @@ func main() {
 	s.TimeFormat = smf.MetricTicks(96)
 	s.Add(melody)
 	s.Add(bass)
-	s.WriteFile("flower.mid")
+	s.WriteFile("mangoes.mid")
 }
