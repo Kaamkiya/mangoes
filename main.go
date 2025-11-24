@@ -51,10 +51,10 @@ var (
 
 	// Sad, use with 60-77 BPM
 	amdfmc = ChordProgression{
-		Chord{midi.A(5), midi.C(5), midi.E(5)},  // Amin
-		Chord{midi.D(5), midi.Gb(5), midi.A(4)}, // Dmaj
-		Chord{midi.F(5), midi.Ab(5), midi.C(5)}, // Fmin
-		Chord{midi.C(5), midi.E(5), midi.G(5)},  // Cmaj
+		Chord{midi.A(4), midi.C(4), midi.E(4)},  // Amin
+		Chord{midi.D(4), midi.Gb(4), midi.A(4)}, // Dmaj
+		Chord{midi.F(4), midi.Ab(4), midi.C(4)}, // Fmin
+		Chord{midi.C(4), midi.E(4), midi.G(4)},  // Cmaj
 	}
 )
 
