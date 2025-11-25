@@ -122,6 +122,7 @@ func main() {
 
 	progressionIdx := 0
 	var lastRestPosition uint64
+
 	for b := range bars {
 		chord := progressionToUse[progressionIdx]
 
@@ -153,13 +154,30 @@ func main() {
 			}
 		} // for i := range 4
 
-		// Play the chord for the bass line
-		bass.Add(0, midi.NoteOn(0, chord[0]-24, volume-20))
-		bass.Add(0, midi.NoteOn(0, chord[1]-24, volume-20))
-		bass.Add(0, midi.NoteOn(0, chord[2]-24, volume-20))
-		bass.Add(4*clock.Ticks4th(), midi.NoteOff(0, chord[0]-24))
-		bass.Add(0, midi.NoteOff(0, chord[1]-24))
-		bass.Add(0, midi.NoteOff(0, chord[2]-24))
+		if b%2 == 0 {
+			// Play the chord for the bass line
+			bass.Add(0, midi.NoteOn(0, chord[0]-24, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[1]-24, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[2]-24, volume-20))
+			bass.Add(4*clock.Ticks4th(), midi.NoteOff(0, chord[0]-24))
+			bass.Add(0, midi.NoteOff(0, chord[1]-24))
+			bass.Add(0, midi.NoteOff(0, chord[2]-24))
+		} else {
+			// Play the chord twice, as half notes
+			bass.Add(0, midi.NoteOn(0, chord[0]-24, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[1]-24, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[2]-24, volume-20))
+			bass.Add(2*clock.Ticks4th(), midi.NoteOff(0, chord[0]-24))
+			bass.Add(0, midi.NoteOff(0, chord[1]-24))
+			bass.Add(0, midi.NoteOff(0, chord[2]-24))
+
+			bass.Add(0, midi.NoteOn(0, chord[0]-12, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[1]-12, volume-20))
+			bass.Add(0, midi.NoteOn(0, chord[2]-12, volume-20))
+			bass.Add(2*clock.Ticks4th(), midi.NoteOff(0, chord[0]-12))
+			bass.Add(0, midi.NoteOff(0, chord[1]-12))
+			bass.Add(0, midi.NoteOff(0, chord[2]-12))
+		}
 
 		fmt.Println(chord)
 
