@@ -11,52 +11,41 @@ import (
 	"github.com/charmbracelet/huh"
 )
 
-// TODO:
-// add ABAB form for bass line (bassForm variable decides whether form=chords || form=ABAB)
-
 func addNote(tr *smf.Track, note uint8, velocity uint8, duration uint32) {
 	tr.Add(0, midi.NoteOn(0, note, velocity))
 	tr.Add(duration, midi.NoteOff(0, note))
 }
 
+var (
+	CmajTriad  = Chord{midi.C(5), midi.E(5), midi.G(5)}
+	DbmajTriad = Chord{midi.Db(5), midi.F(5), midi.Ab(5)}
+	DmajTriad  = Chord{midi.D(5), midi.Gb(5), midi.A(5)}
+	EbmajTriad = Chord{midi.Eb(5), midi.G(5), midi.Bb(5)}
+	EmajTriad  = Chord{midi.E(5), midi.Ab(5), midi.B(5)}
+	FmajTriad  = Chord{midi.F(5), midi.A(5), midi.C(5)}
+	GbmajTriad = Chord{midi.Gb(5), midi.Bb(5), midi.Db(5)}
+	GmajTriad  = Chord{midi.G(5), midi.B(5), midi.D(5)}
+	AbmajTriad = Chord{midi.Ab(5), midi.C(5), midi.Eb(5)}
+	AmajTriad  = Chord{midi.A(5), midi.Db(5), midi.E(5)}
+	BbmajTriad = Chord{midi.Bb(5), midi.D(5), midi.F(5)}
+	BmajTriad  = Chord{midi.B(5), midi.Eb(5), midi.Gb(5)}
+
+	CminTriad  = Chord{midi.C(5), midi.Eb(5), midi.G(5)}
+	CSminTriad = Chord{midi.Db(5), midi.E(5), midi.Ab(5)}
+	DminTriad  = Chord{midi.D(5), midi.F(5), midi.A(5)}
+	EbminTriad = Chord{midi.Eb(5), midi.Gb(5), midi.Bb(5)}
+	EminTriad  = Chord{midi.E(5), midi.G(5), midi.B(5)}
+	FminTriad  = Chord{midi.F(5), midi.Ab(5), midi.C(5)}
+	FSminTriad = Chord{midi.Gb(5), midi.A(5), midi.Db(5)}
+	GminTriad  = Chord{midi.G(5), midi.Bb(5), midi.D(5)}
+	GSminTriad = Chord{midi.Ab(5), midi.B(5), midi.Eb(5)}
+	AminTriad  = Chord{midi.A(5), midi.C(5), midi.E(5)}
+	BbminTriad = Chord{midi.Bb(5), midi.Db(5), midi.F(5)}
+	BminTriad  = Chord{midi.B(5), midi.D(5), midi.Gb(5)}
+)
+
 type Chord [3]uint8
 type ChordProgression [4]Chord
-
-var (
-	// C F# Bb C is heartbreaking. C Eb7 G#dim7 Amaj9#11 is extremely sorrowful too.
-
-	// Happy, use with 120-150 BPM
-	cgaf = ChordProgression{
-		Chord{midi.C(5), midi.E(5), midi.G(5)}, // Cmaj
-		Chord{midi.G(5), midi.B(5), midi.D(5)}, // Gmaj
-		Chord{midi.A(5), midi.C(5), midi.E(5)}, // Amin
-		Chord{midi.F(5), midi.A(5), midi.C(5)}, // Fmaj
-	}
-
-	// Happy, use with 120-150 BPM
-	cfgf = ChordProgression{
-		Chord{midi.C(5), midi.E(5), midi.G(5)}, // Cmaj
-		Chord{midi.F(5), midi.A(5), midi.C(5)}, // Fmaj
-		Chord{midi.G(5), midi.B(5), midi.D(5)}, // Gmaj
-		Chord{midi.F(5), midi.A(5), midi.C(5)}, // Fmaj
-	}
-
-	// Creepy, use with 80-100 BPM
-	cece = ChordProgression{
-		Chord{midi.C(4), midi.Eb(4), midi.G(4)},   // Cmaj
-		Chord{midi.Eb(4), midi.Gb(4), midi.Bb(4)}, // Ebmaj
-		Chord{midi.C(4), midi.Eb(4), midi.G(4)},   // Cmaj
-		Chord{midi.Eb(4), midi.Gb(4), midi.Bb(4)}, // Ebmaj
-	}
-
-	// Sad, use with 60-77 BPM
-	amdfmc = ChordProgression{
-		Chord{midi.A(4), midi.C(4), midi.E(4)},  // Amin
-		Chord{midi.D(4), midi.Gb(4), midi.A(4)}, // Dmaj
-		Chord{midi.F(4), midi.Ab(4), midi.C(4)}, // Fmin
-		Chord{midi.C(4), midi.E(4), midi.G(4)},  // Cmaj
-	}
-)
 
 // TODO:
 // make it so that users can choose the chord progression. they submit a
@@ -67,6 +56,33 @@ func getInputs() (tempo float64, bars uint64, progression ChordProgression) {
 	var barsStr string
 	var tempoStr string
 
+	chordOptions := []huh.Option[Chord]{
+		huh.NewOption("C maj", CmajTriad),
+		huh.NewOption("Db maj", DbmajTriad),
+		huh.NewOption("D maj", DmajTriad),
+		huh.NewOption("Eb maj", EbmajTriad),
+		huh.NewOption("E maj", EmajTriad),
+		huh.NewOption("F maj", FmajTriad),
+		huh.NewOption("Gb maj", GbmajTriad),
+		huh.NewOption("G maj", GmajTriad),
+		huh.NewOption("Ab maj", AbmajTriad),
+		huh.NewOption("A maj", AmajTriad),
+		huh.NewOption("Bb maj", BbmajTriad),
+		huh.NewOption("B maj", BmajTriad),
+		huh.NewOption("C min", CminTriad),
+		huh.NewOption("C# min", CSminTriad),
+		huh.NewOption("D min", DminTriad),
+		huh.NewOption("Eb min", EbminTriad),
+		huh.NewOption("E min", EminTriad),
+		huh.NewOption("F min", FminTriad),
+		huh.NewOption("F# min", FSminTriad),
+		huh.NewOption("G min", GminTriad),
+		huh.NewOption("G# min", GSminTriad),
+		huh.NewOption("A min", AminTriad),
+		huh.NewOption("Bb min", BbminTriad),
+		huh.NewOption("B min", BminTriad),
+	}
+
 	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewInput().
@@ -75,15 +91,30 @@ func getInputs() (tempo float64, bars uint64, progression ChordProgression) {
 			huh.NewInput().
 				Title("How many bars of music?").
 				Value(&barsStr),
-			huh.NewSelect[ChordProgression]().
-				Title("Chord progression to use").
-				Value(&progression).
-				Options(
-					huh.NewOption("C, G, A, F", cgaf),
-					huh.NewOption("C, Eb, C, Eb", cece),
-					huh.NewOption("C, F, G, F", cfgf),
-					huh.NewOption("Am, D, Fm, C", amdfmc),
-				),
+		),
+		huh.NewGroup(
+			huh.NewSelect[Chord]().
+				Title("First triad for the chord progression to use").
+				Value(&progression[0]).
+				Options(chordOptions...),
+		),
+		huh.NewGroup(
+			huh.NewSelect[Chord]().
+				Title("Second triad for the chord progression to use").
+				Value(&progression[1]).
+				Options(chordOptions...),
+		),
+		huh.NewGroup(
+			huh.NewSelect[Chord]().
+				Title("Third triad for the chord progression to use").
+				Value(&progression[2]).
+				Options(chordOptions...),
+		),
+		huh.NewGroup(
+			huh.NewSelect[Chord]().
+				Title("Fourth triad for the chord progression to use").
+				Value(&progression[3]).
+				Options(chordOptions...),
 		),
 	)
 
@@ -107,6 +138,9 @@ func getInputs() (tempo float64, bars uint64, progression ChordProgression) {
 
 func main() {
 	volume := uint8(100)
+
+	fmt.Println("cmin-EMAJ-FMAJ-gmin")
+	fmt.Println("CMAJ-GMAJ-amin-FMAJ")
 
 	tempo, bars, progressionToUse := getInputs()
 
