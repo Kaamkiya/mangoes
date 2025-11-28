@@ -141,6 +141,7 @@ func main() {
 
 	fmt.Println("cmin-EMAJ-FMAJ-gmin")
 	fmt.Println("CMAJ-GMAJ-amin-FMAJ")
+	fmt.Println("amin-DMAJ-fmin-CMAJ")
 
 	tempo, bars, progressionToUse := getInputs()
 
